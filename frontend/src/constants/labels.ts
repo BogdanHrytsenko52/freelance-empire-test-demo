@@ -33,3 +33,14 @@ export const NOTIFICATION_TYPE_LABELS: Record<NotificationType, string> = {
   penalty: 'Штраф',
   new_contract: 'Новий контракт',
 }
+
+export const PROJECT_STATUS_LABELS: Record<string, string> = {
+  in_progress: 'У роботі',
+  completed: 'Завершено',
+  failed: 'Провалено',
+}
+export const ROLE_LABELS: Record<string, string> = {
+  player: 'Гравець',
+  moderator: 'Модератор',
+  admin: 'Адміністратор',
+}

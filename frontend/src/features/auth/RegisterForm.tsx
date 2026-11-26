@@ -29,13 +29,18 @@ export default function RegisterForm() {
     setLoading(true)
     try {
       const email = values.email.trim()
-      await registerRequest({ username: values.username.trim(), email, password: values.password })
+      await registerRequest({ username: values.username.trim(), email, password: values.password, password_confirm: values.confirm })
       const tokens = await loginRequest({ username: values.username.trim(), password: values.password })
       login(tokens.access, tokens.refresh)
       navigate('/company/create', { replace: true })
     } catch (err) {
       const apiErr = toApiError(err)
       const fieldErrors = getFieldErrors(apiErr)
+      if (fieldErrors.password_confirm) {
+        // у backend поле підтвердження називається password_confirm, у формі це confirm
+        fieldErrors.confirm = fieldErrors.password_confirm
+        delete fieldErrors.password_confirm
+      }
       setErrors((prev) => ({ ...prev, ...fieldErrors }))
       setApiError(Object.keys(fieldErrors).length ? 'Перевірте виділені поля' : apiErr.message)
     } finally {

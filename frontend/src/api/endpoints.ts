@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     logout: '/auth/logout/',
     me: '/auth/me/',
   },
+  game: { state: '/game/state/' }, // пропозиція frontend, ще не узгоджено
   company: { root: '/companies/', me: '/companies/me/', finance: '/companies/me/finance/' },
   employees: {
     list: '/employees/',
