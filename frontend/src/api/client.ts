@@ -1,12 +1,19 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { tokenStorage } from '../utils/storage'
 import { ENDPOINTS } from './endpoints'
+import { mockAdapter } from '../mock/adapter'
 import type { ApiError } from '../types'
 
 // Єдиний HTTP-клієнт. Компоненти не роблять запитів напряму, а викликають функції з features/*/…Api.ts.
 export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api'
 
+// VITE_USE_MOCKS: 'true' усе на моках, 'hybrid' авторизація з реальним Django, решта на моках, інакше реальний API.
+export const USE_MOCKS = ['true', 'hybrid'].includes(String(import.meta.env.VITE_USE_MOCKS))
+
 export const api = axios.create({ baseURL: API_URL })
+
+// Режим мок-даних: запити не йдуть у мережу, відповіді формує src/mock/. Вимикається VITE_USE_MOCKS=false.
+if (USE_MOCKS) api.defaults.adapter = mockAdapter
 
 api.interceptors.request.use((config) => {
   const token = tokenStorage.getAccess()

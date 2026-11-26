@@ -107,6 +107,8 @@ export interface GameEvent {
   choices: EventChoice[]
   created_at: string
   resolved_at: string | null
+  chosen_choice_id: number | null
+  outcome: string[] // наслідки рішення, формує сервер
 }
 
 export interface AppNotification {
@@ -125,4 +127,54 @@ export interface LeaderboardEntry {
   reputation: number
   balance: Money
   completed_contracts: number
+}
+
+export interface ChatMessage {
+  id: number
+  sender: 'player' | 'npc'
+  text: string
+  created_at: string
+}
+
+export interface ChatProposal {
+  budget: Money
+  deadline: number
+}
+
+export interface ChatState {
+  messages: ChatMessage[]
+  proposal: ChatProposal | null // поточна пропозиція клієнта (після серверної валідації)
+  negotiations_left: number
+  max_message_length: number
+  fallback?: boolean // true, якщо Groq недоступний і відповідь шаблонна
+}
+
+export interface AcceptResult {
+  project_id: number
+}
+
+export interface SubmitResult {
+  accepted: boolean
+  needs_rework: boolean
+  payout: Money
+  reputation_change: number
+  message: string
+}
+
+export interface FinanceDaily {
+  game_day: number
+  income: Money
+  expenses: Money
+}
+
+export interface FinanceSummary {
+  income: Money
+  expenses: Money
+  profit: Money
+  daily: FinanceDaily[]
+}
+
+// Ендпоінт ще не узгоджено з backend (відкрите питання №1 у API_CONTRACT.md).
+export interface GameState {
+  game_day: number
 }

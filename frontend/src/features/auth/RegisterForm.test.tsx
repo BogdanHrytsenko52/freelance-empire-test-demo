@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import RegisterForm from './RegisterForm'
@@ -22,12 +23,14 @@ function setup() {
 }
 
 async function fill(password = 'secret123', confirm = 'secret123') {
-  await userEvent.type(screen.getByLabelText('Імʼя користувача'), 'player_1')
-  await userEvent.type(screen.getByLabelText('Email'), 'a@b.co')
-  await userEvent.type(screen.getByLabelText('Пароль'), password)
-  await userEvent.type(screen.getByLabelText('Повторіть пароль'), confirm)
-  await userEvent.click(screen.getByRole('button', { name: 'Створити акаунт' }))
+  await user.type(screen.getByLabelText('Імʼя користувача'), 'player_1')
+  await user.type(screen.getByLabelText('Email'), 'a@b.co')
+  await user.type(screen.getByLabelText('Пароль'), password)
+  await user.type(screen.getByLabelText('Повторіть пароль'), confirm)
+  await user.click(screen.getByRole('button', { name: 'Створити акаунт' }))
 }
+
+const user = userEvent.setup({ delay: null })
 
 describe('RegisterForm', () => {
   beforeEach(() => {
@@ -48,7 +51,7 @@ describe('RegisterForm', () => {
     setup()
     await fill()
     expect(await screen.findByRole('heading', { name: 'Створення компанії' })).toBeInTheDocument()
-    expect(authApi.registerRequest).toHaveBeenCalledWith({ username: 'player_1', email: 'a@b.co', password: 'secret123' })
+    expect(authApi.registerRequest).toHaveBeenCalledWith({ username: 'player_1', email: 'a@b.co', password: 'secret123', password_confirm: 'secret123' })
   })
 
   it('показує помилки полів із API', async () => {

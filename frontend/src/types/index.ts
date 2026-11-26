@@ -33,4 +33,5 @@ export interface RegisterPayload {
   username: string
   email: string
   password: string
+  password_confirm: string // backend (RegisterSerializer) вимагає підтвердження пароля
 }
